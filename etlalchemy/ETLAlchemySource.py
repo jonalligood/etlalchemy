@@ -1461,12 +1461,19 @@ class ETLAlchemySource():
                     # Update the table_name
                     ref_table = table_transform.new_table
                 T_ref = Table(ref_table, dst_meta)
+
                 ############################
                 # Check that referenced table
                 # exists in destination DB schema
                 ############################
-                constraint_name = "FK__{0}__{1}".format(
-                    table_name.upper(), T_ref.name.upper())
+                if fk['name']:
+                    constraint_name = fk['name']
+                else:
+                    constraint_name = "FK__{0}__{1}".format(
+                        table_name.upper(),
+                        T_ref.name.upper()
+                    )
+
                 if len(constraint_name) > 63:
                     constraint_name = constraint_name[:63]
                 
